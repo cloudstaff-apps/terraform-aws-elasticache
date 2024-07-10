@@ -7,9 +7,7 @@ module "labels" {
 
   enabled     = var.enable
   name        = var.name
-  repository  = var.repository
   environment = var.environment
-  managedby   = var.managedby
   label_order = var.label_order
   extra_tags  = var.extra_tags
 }
@@ -282,7 +280,7 @@ resource "aws_route53_record" "memcached_route_53" {
 resource "aws_ssm_parameter" "memcached_secret-endpoint" {
   count = var.enable && var.memcached_ssm_parameter_endpoint_enabled ? 1 : 0
 
-  name        = format("/%s/%s/memcached-endpoint", var.environment, var.name)
+  name        = format("/%s/%s/memcached/ENDPOINT", var.environment, var.name)
   description = var.ssm_parameter_description
   type        = var.ssm_parameter_type
   value       = join("", aws_elasticache_cluster.default[*].configuration_endpoint)
